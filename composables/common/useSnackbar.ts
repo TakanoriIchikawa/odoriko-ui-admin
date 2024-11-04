@@ -1,4 +1,4 @@
-import type { Snackbar } from "@/type/common/snackbar";
+import type { Snackbar } from "@/type/common/Snackbar";
 
 export const useSnackbar = () => {
   const snackbar = useState<Snackbar>("snackbar", () => {

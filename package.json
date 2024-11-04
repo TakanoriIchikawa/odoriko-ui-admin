@@ -11,6 +11,7 @@
     "start": "nuxt start"
   },
   "dependencies": {
+    "dayjs": "^1.11.13",
     "nuxt": "^3.13.2",
     "vue": "latest",
     "vue-router": "latest",

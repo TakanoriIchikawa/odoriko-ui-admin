@@ -1,5 +1,5 @@
 import type { PaginateResponse } from "@/type/api/PaginateResponse";
-import type { Paginate } from "@/type/common/paginate";
+import type { Paginate } from "@/type/common/Paginate";
 
 interface CrudApiClientInterface<S> {
   fetch: (params: any) => Promise<{ data: S[]; paginate: Paginate }>;
@@ -61,7 +61,8 @@ export abstract class CrudApiClient<S> implements CrudApiClientInterface<S> {
   }
 
   async create(params: any): Promise<S> {
-    return await apiFetch<{ data: S }>(`${this.basePath}/`, { method: 'POST', body: params })
+    const body = params instanceof FormData ? params : JSON.stringify(params);
+    return await apiFetch<{ data: S }>(`${this.basePath}/`, { method: 'POST', body })
       .then((response: { data: S } | undefined) => {
         if (response) {
           return response.data;
@@ -74,7 +75,8 @@ export abstract class CrudApiClient<S> implements CrudApiClientInterface<S> {
   }
 
   async update(id: string, params: any): Promise<S> {
-    return await apiFetch<{ data: S }>(`${this.basePath}/${id}`, { method: 'PUT', body: params })
+    const body = params instanceof FormData ? params : JSON.stringify(params);
+    return await apiFetch<{ data: S }>(`${this.basePath}/${id}`, { method: 'PUT', body })
       .then((response: { data: S } | undefined) => {
         if (response) {
           return response.data;

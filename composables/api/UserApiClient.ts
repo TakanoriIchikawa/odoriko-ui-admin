@@ -1,10 +1,10 @@
 import { CrudApiClient } from "./base/CrudApiClient";
-import type { User } from "@/interface/user";
+import type { UserApi } from "@/interface/api/UserApi";
 
 interface UserApiClientInterface {
   //
 }
 
-export class UserApiClient extends CrudApiClient<User> implements UserApiClientInterface {
+export class UserApiClient extends CrudApiClient<UserApi> implements UserApiClientInterface {
   constructor() { super("users") }
 }

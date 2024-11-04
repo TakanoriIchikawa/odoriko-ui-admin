@@ -1,4 +1,4 @@
-import type { Paginate } from "@/type/common/paginate";
+import type { Paginate } from "@/type/common/Paginate";
 
 export const usePaginate = () => {
   const paginate = useState<Paginate>("paginate", () => {

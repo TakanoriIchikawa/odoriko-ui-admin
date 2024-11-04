@@ -8,13 +8,11 @@ interface ResponseMap {
   arrayBuffer: ArrayBuffer;
 }
 type ResponseType = keyof ResponseMap | "json";
-type apiFetchOptions<R extends ResponseType> = FetchOptions<R> & {
-  isRedirectSignIn?: boolean;
-};
+type apiFetchOptions<R extends ResponseType> = FetchOptions<R> & {};
 
 export const apiFetch = async <T, R extends ResponseType = "json">(
   path: RequestInfo,
-  { isRedirectSignIn = true, ...options }: apiFetchOptions<R> = {}
+  { method, body, ...options }: apiFetchOptions<R> = {}
 ) => {
   // TODO: 調整
   // const { frontendUrl, backendUrl } = useRuntimeConfig().public
@@ -24,12 +22,7 @@ export const apiFetch = async <T, R extends ResponseType = "json">(
   const frontendUrl = "http://hutokyaku.localhost";
   const backendUrl = "http://user.api.hutokyaku.localhost";
 
-  if (
-    process.client &&
-    ["post", "put", "delete"].includes(
-      String(options?.method?.toLowerCase() ?? "")
-    )
-  ) {
+  if (process.client && ["POST", "PUT", "DELETE"].includes(String(method).toUpperCase())) {
     // XSRF-TOKEN が重複するため事前に削除
     const oldToken = useCookie("XSRF-TOKEN");
     oldToken.value = null;
@@ -41,34 +34,27 @@ export const apiFetch = async <T, R extends ResponseType = "json">(
   }
 
   const token = useCookie("XSRF-TOKEN");
-
-  let serverHeaders: any = {};
-  if (process.server) {
-    serverHeaders = {
-      ...useRequestHeaders(["cookie"]),
-      referer: frontendUrl,
-    };
-  }
-
   const headers: any = {
     accept: "application/json",
-    "content-type": "application/json",
     "X-XSRF-TOKEN": token.value,
     ...options?.headers,
-    ...serverHeaders,
+    ...(method === "PUT" || method === "DELETE" ? { "X-HTTP-Method-Override": method } : {}),
+    ...(process.server ? { ...useRequestHeaders(["cookie"]), referer: frontendUrl } : {}),
   };
 
   try {
     return await $fetch<T, R>(path, {
-      ...options,
+      method: method === "PUT" || method === "DELETE" ? "POST" : method,
       baseURL: backendUrl,
       credentials: "include",
       headers,
+      body,
+      ...options,
     });
   } catch (error) {
     if ((error instanceof FetchError) && error.response?.status === 401) {
 
-      if (path === "auth/user" || path === "auth/logout") {
+      if (path.toString().startsWith("/auth")) {
         return;
       }
 

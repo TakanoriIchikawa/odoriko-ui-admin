@@ -3,9 +3,9 @@ export interface User {
   name: string;
   email: string;
   image: string;
-  gender: 'male'|'female'|'other'|null;
+  gender: "male" | "female" | "other" | null;
   genderText: string;
-  dateOfBirth: string|null;
+  dateOfBirth: string | null;
   firstName: string;
   lastName: string;
   firstNameKana: string;
@@ -16,6 +16,6 @@ export interface User {
   city: string;
   town: string;
   address: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }

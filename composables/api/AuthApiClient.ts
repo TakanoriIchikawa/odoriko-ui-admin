@@ -1,19 +1,19 @@
 import { CrudApiClient } from "./base/CrudApiClient";
-import type { User } from "@/interface/user";
+import type { UserApi } from "@/interface/api/UserApi";
 
 interface AuthApiClientInterface {
-  register: (params: { email: string, password: string, passwordConfirmation: string }) => Promise<User>;
-  login: (params: { email: string, password: string }) => Promise<User>;
+  register: (params: { email: string, password: string, password_confirmation: string }) => Promise<UserApi>;
+  login: (params: { email: string, password: string }) => Promise<UserApi>;
   logout: () => Promise<void>;
-  currentAuth: () => Promise<User | null>;
+  currentAuth: () => Promise<UserApi | null>;
 }
 
-export class AuthApiClient extends CrudApiClient<User> implements AuthApiClientInterface {
+export class AuthApiClient extends CrudApiClient<UserApi> implements AuthApiClientInterface {
   constructor() { super("auth") }
 
-  async register(params: { email: string, password: string, passwordConfirmation: string }): Promise<User> {
-    return await apiFetch<{ data: User }>(`${this.basePath}/register`, { method: "POST", body: params })
-      .then((response: { data: User } | undefined) => {
+  async register(params: { email: string, password: string, password_confirmation: string }): Promise<UserApi> {
+    return await apiFetch<{ data: UserApi }>(`${this.basePath}/register`, { method: "POST", body: params })
+      .then((response: { data: UserApi } | undefined) => {
         if (response) {
           return response.data;
         }
@@ -24,9 +24,9 @@ export class AuthApiClient extends CrudApiClient<User> implements AuthApiClientI
       });
   }
 
-  async login(params: { email: string, password: string }): Promise<User> {
-    return await apiFetch<{ data: User }>(`${this.basePath}/login`, { method: "POST", body: params })
-      .then((response: { data: User } | undefined) => {
+  async login(params: { email: string, password: string }): Promise<UserApi> {
+    return await apiFetch<{ data: UserApi }>(`${this.basePath}/login`, { method: "POST", body: params })
+      .then((response: { data: UserApi } | undefined) => {
         if (response) {
           return response.data;
         }
@@ -47,9 +47,9 @@ export class AuthApiClient extends CrudApiClient<User> implements AuthApiClientI
       });
   }
 
-  async currentAuth(): Promise<User | null> {
-    return await apiFetch<{ data: User }>(`${this.basePath}/user`, {})
-      .then((response: { data: User } | undefined) => {
+  async currentAuth(): Promise<UserApi | null> {
+    return await apiFetch<{ data: UserApi }>(`${this.basePath}/user`, {})
+      .then((response: { data: UserApi } | undefined) => {
         if (response) {
           return response.data;
         }

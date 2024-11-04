@@ -21,14 +21,16 @@ const signin = async () => {
   const isValid = (await formElement.value?.validate())?.valid;
   if (isValid) {
     isLoading.value = true;
+    emailError.value = ''
+    passwordError.value = ''
+
     const params = {
       email: email.value, 
       password: password.value,
     };
     await login(params).then(() => {
-        const path = route.query.returnPath ? String(route.query.returnPath) : '/'
-        router.push(path);
         showSnackbar("ログインに成功しました", "success");
+        router.push(route.query.returnPath ? String(route.query.returnPath) : '/');
       })
       .catch((errorResponse: ErrorResponse) => {
         showSnackbar(errorResponse.data.message, "error");

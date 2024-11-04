@@ -21,14 +21,17 @@ const signup = async () => {
   const isValid = (await formElement.value?.validate())?.valid;
   if (isValid) {
     isLoading.value = true;
+    emailError.value = ''
+    passwordError.value = ''
+
     const params = {
       email: email.value,
       password: password.value,
-      passwordConfirmation: passwordConfirmation.value,
+      password_confirmation: passwordConfirmation.value,
     };
     await register(params).then(() => {
-        router.push("/test");
         showSnackbar("会員登録に成功しました", "success");
+        router.push("/test");
       })
       .catch((errorResponse: ErrorResponse) => {
         showSnackbar(errorResponse.data.message, "error");
