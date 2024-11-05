@@ -112,7 +112,7 @@ const emailRules = (v: any): boolean | string => {
     <div>{{ paginate }}</div>
     
     <v-img
-      v-if="auth.image"
+      v-if="auth && auth.image"
       :src="auth.image"
       max-width="200"
       max-height="200"
