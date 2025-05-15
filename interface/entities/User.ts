@@ -11,11 +11,11 @@ export interface User {
   firstNameKana: string;
   lastNameKana: string;
   tel: string;
-  postCode: string;
+  postalCode: string;
   prefecture: string;
   city: string;
   town: string;
-  address: string;
+  building: string;
   createdAt: string;
   updatedAt: string;
 }

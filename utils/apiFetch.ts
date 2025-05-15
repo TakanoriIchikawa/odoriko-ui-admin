@@ -14,20 +14,13 @@ export const apiFetch = async <T, R extends ResponseType = "json">(
   path: RequestInfo,
   { method, body, ...options }: apiFetchOptions<R> = {}
 ) => {
-  // TODO: 調整
-  // const { frontendUrl, backendUrl } = useRuntimeConfig().public
-
-  console.log("通信開始（URL固定で指定）");
-  console.log(path);
-  const frontendUrl = "http://hutokyaku.localhost";
-  const backendUrl = "http://user.api.hutokyaku.localhost";
-
+  const { frontendUrl, backendUrl } = useRuntimeConfig().public
   if (process.client && ["POST", "PUT", "DELETE"].includes(String(method).toUpperCase())) {
     // XSRF-TOKEN が重複するため事前に削除
     const oldToken = useCookie("XSRF-TOKEN");
     oldToken.value = null;
 
-    await $fetch("/api/sanctum/csrf-cookie", {
+    await $fetch("/sanctum/csrf-cookie", {
       baseURL: backendUrl,
       credentials: "include",
     });
@@ -54,8 +47,12 @@ export const apiFetch = async <T, R extends ResponseType = "json">(
   } catch (error) {
     if ((error instanceof FetchError) && error.response?.status === 401) {
 
-      if (path.toString().startsWith("/auth")) {
+      if (path === "auth/worker") {
         return;
+      }
+
+      if (path === "auth/login" || path === "auth/register") {
+        throw error;
       }
 
       const router = useRouter();

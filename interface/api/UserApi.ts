@@ -10,11 +10,11 @@ export interface UserApi {
   first_name_kana: string;
   last_name_kana: string;
   tel: string;
-  post_code: string;
+  postal_code: string;
   prefecture: string;
   city: string;
   town: string;
-  address: string;
+  building: string;
   created_at: string;
   updated_at: string;
 }

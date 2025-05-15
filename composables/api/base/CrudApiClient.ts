@@ -14,7 +14,8 @@ export abstract class CrudApiClient<S> implements CrudApiClientInterface<S> {
   protected constructor(protected readonly basePath: string) {}
 
   async fetch(params: any): Promise<{ paginate: Paginate; data: S[] }> {
-    return await apiFetch<PaginateResponse<S>>(`${this.basePath}`, params)
+    const queryParams = new URLSearchParams(params).toString();
+    return await apiFetch<PaginateResponse<S>>(`${this.basePath}?${queryParams}`)
       .then((response: PaginateResponse<S> | undefined) => {
         if (response) {
           return {
@@ -35,7 +36,8 @@ export abstract class CrudApiClient<S> implements CrudApiClientInterface<S> {
   }
 
   async all(params: any): Promise<S[]> {
-    return await apiFetch<{ data: S[] }>(`${this.basePath}/all`, params)
+    const queryParams = new URLSearchParams(params).toString();
+    return await apiFetch<{ data: S[] }>(`${this.basePath}/all?${queryParams}`)
       .then((response: { data: S[] } | undefined) => {
         if (response) {
           return response.data;
@@ -46,7 +48,6 @@ export abstract class CrudApiClient<S> implements CrudApiClientInterface<S> {
         throw this.setErrorResponse(error);
       });
   }
-
   async find(id: string): Promise<S> {
     return await apiFetch<{ data: S }>(`${this.basePath}/${id}`)
       .then((response: { data: S } | undefined) => {

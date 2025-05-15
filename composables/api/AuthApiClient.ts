@@ -5,7 +5,6 @@ interface AuthApiClientInterface {
   register: (params: { email: string, password: string, password_confirmation: string }) => Promise<UserApi>;
   login: (params: { email: string, password: string }) => Promise<UserApi>;
   logout: () => Promise<void>;
-  currentAuth: () => Promise<UserApi | null>;
 }
 
 export class AuthApiClient extends CrudApiClient<UserApi> implements AuthApiClientInterface {
@@ -41,19 +40,6 @@ export class AuthApiClient extends CrudApiClient<UserApi> implements AuthApiClie
     return await apiFetch<{ data: null }>(`${this.basePath}/logout`, { method: "POST", body: {} })
       .then(() => {
         //
-      })
-      .catch((error) => {
-        throw this.setErrorResponse(error);
-      });
-  }
-
-  async currentAuth(): Promise<UserApi | null> {
-    return await apiFetch<{ data: UserApi }>(`${this.basePath}/user`, {})
-      .then((response: { data: UserApi } | undefined) => {
-        if (response) {
-          return response.data;
-        }
-        return null;
       })
       .catch((error) => {
         throw this.setErrorResponse(error);

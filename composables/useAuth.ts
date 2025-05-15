@@ -63,7 +63,7 @@ export const useAuth = () => {
 
 export const fetchCurrentAuth = async (): Promise<User | null> => {
   try {
-    const response = await apiFetch<{ data: UserApi }>("/auth/user", {});
+    const response = await apiFetch<{ data: UserApi }>("/auth/admin", {});
     if (response) {
       return response.data ? convertUserApiToUser(response.data) : null;
     }

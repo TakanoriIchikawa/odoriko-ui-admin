@@ -11,19 +11,21 @@ export const convertUserApiToUser = (userApi: UserApi): User => {
     image: userApi.image,
     gender: userApi.gender,
     genderText: getGenderText(userApi.gender),
-    dateOfBirth: userApi.date_of_birth ? dayjs(userApi.date_of_birth).format("YYYY-MM-DD") : null,
+    dateOfBirth: userApi.date_of_birth
+      ? dayjs(userApi.date_of_birth).format("YYYY-MM-DD")
+      : null,
     firstName: userApi.first_name,
     lastName: userApi.last_name,
     firstNameKana: userApi.first_name_kana,
     lastNameKana: userApi.last_name_kana,
     tel: userApi.tel,
-    postCode: userApi.post_code,
+    postalCode: userApi.postal_code,
     prefecture: userApi.prefecture,
     city: userApi.city,
     town: userApi.town,
-    address: userApi.address,
-    createdAt: dayjs(userApi.created_at).format('YYYY-MM-DD HH:mm:ss'),
-    updatedAt: dayjs(userApi.updated_at).format('YYYY-MM-DD HH:mm:ss'),
+    building: userApi.building,
+    createdAt: dayjs(userApi.created_at).format("YYYY-MM-DD HH:mm:ss"),
+    updatedAt: dayjs(userApi.updated_at).format("YYYY-MM-DD HH:mm:ss"),
   };
 };
 
