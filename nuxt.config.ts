@@ -9,6 +9,11 @@ export default defineNuxtConfig({
       backendUrl: process.env.NUXT_PUBLIC_BACKEND_URL,
     },
   },
+  nitro: {
+    compressPublicAssets: true,
+    preset: "aws-lambda",
+    serveStatic: false,
+  },
   modules: ["@nuxtjs/tailwindcss", "vuetify-nuxt-module"],
   vuetify: {
     moduleOptions: {
